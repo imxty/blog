@@ -2,4 +2,4 @@ logging:
    name: Myblog_Log
    config: classpath:logback-spring.xml
    level:
-      root: info
+      root: debug
