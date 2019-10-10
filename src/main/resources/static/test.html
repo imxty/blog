@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="/webjars/sockjs-client/sockjs.min.js"></script>
+    <script src="/webjars/stomp-websocket/stomp.min.js"></script>
+    <script type="text/javascript" src="/js/ShareWord.js"></script>
+</head>
+<body>
+    <textarea id="markdown" style="width: 200px;height: 200px;" onkeyup="change()">
+
+    </textarea>
+
+    <button onclick="getArticle()">转化</button>
+    <button onclick="sendArticle()">提交</button>
+
+    <div id="aaa">
+
+    </div>
+    <script>
+        window.onload = function () { connect() }
+        function trans(text) {
+            var converter = new showdown.Converter()
+        //    var text = $("#markdown").val();
+         //   alert(text)
+            html = converter.makeHtml(text.date);
+
+            document.getElementById("aaa").innerHTML=html;
+        }
+        
+        function sendArticle() {
+            var text = $("#markdown").val();
+          //  console.log(text)
+            $.ajax({
+                type: "post",
+                url: "/saveArticle",
+                data : {"article":text},
+                dataType:'json',
+                success: function(data){
+                    alert(data)
+                }
+            });
+        }
+
+        function getArticle() {
+            $.ajax({
+                type: "get",
+                url: "/getArticle",
+                dataType:'json',
+                success: function(data){
+                    console.log(data)
+                    trans(data)
+                }
+            });
+        }
+
+        function change() {
+            sendMes();
+        }
+
+    </script>
+</body>
+</html>
